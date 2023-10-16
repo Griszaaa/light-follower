@@ -26,6 +26,8 @@
 #define MOTOR_LEFT OCR1A
 #define MOTOR_RIGHT OCR1B
 
+#define DRIVE_LED (1<<PD4)
+
 // *** DEKLARACJE FUNKCJI ***
 void motors_init(void);
 void motors_dir(uint8_t dir);
@@ -35,6 +37,11 @@ void motors_for_right(void);
 void motors_left(void);
 void motors_right(void);
 void motors_stop(void);
+
+void drive(void);
+void drive_led_on(void);
+void drive_led_off(void);
+
 
 
 #endif /* MOTORS_MOTORS_H_ */

@@ -74,3 +74,52 @@ void motors_stop(void)
 	MOTOR_LEFT = 0;
 	MOTOR_RIGHT = 0;
 }
+
+void drive(void)
+{
+	uint8_t dir_switch = adc_motors_read();
+    switch (dir_switch)
+    {
+    case 0:
+		drive_led_on();
+		motors_forward();
+		break;
+    
+    case 1:
+		drive_led_on();
+		motors_for_right();
+		break;
+    
+    case 2:
+		drive_led_on();
+		motors_for_left();
+		break;
+    
+    case 3:
+		drive_led_on();
+		motors_right();
+		break;
+    
+    case 4:
+    	drive_led_on();
+      	motors_left();
+      	break;
+
+    default:
+		drive_led_off();
+    	motors_stop();
+      break;
+    }
+}
+
+void drive_led_on(void)
+{
+	DDRD |= (1<<PD4);
+	PORTD &= ~(1<<PD4);
+}
+
+void drive_led_off(void)
+{
+	DDRD |= (1<<PD4);
+	PORTD |= (1<<PD4);
+}
