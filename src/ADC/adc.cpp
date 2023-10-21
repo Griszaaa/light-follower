@@ -7,7 +7,7 @@
 void adc_init(void)
 {
 	ADMUX |= (1<<REFS0) | (1<<REFS1); // wybór Ÿród³a odnieniesia - wewnêtrzne 2,56 V
-	ADCSRA |= (1<<ADEN); // w³¹czenie przetwornika oraz preskaler - 2
+	ADCSRA |= (1<<ADEN) | (1<<	ADPS2) | (1<<ADPS1); // w³¹czenie przetwornika oraz preskaler - 64 (próbkowanie przy 10-bitach musi byæ od 50 - 200 kHz, w tym przypadku 125 kHz)
 }
 
 uint8_t adc_motors_read(void)
