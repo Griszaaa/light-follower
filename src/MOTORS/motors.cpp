@@ -43,7 +43,7 @@ void motors_dir(uint8_t dir)
 void motors_forward(void)
 {
 	MOTOR_LEFT = 255;
-	MOTOR_RIGHT = 245;
+	MOTOR_RIGHT = 255;
 }
 
 void motors_for_left(void)
@@ -55,7 +55,7 @@ void motors_for_left(void)
 void motors_for_right(void)
 {
 	MOTOR_LEFT = 255;
-	MOTOR_RIGHT = 210;
+	MOTOR_RIGHT = 220;
 }
 
 void motors_left(void)
@@ -80,27 +80,27 @@ void drive(void)
 	uint8_t dir_switch = adc_motors_read();
     switch (dir_switch)
     {
-    case 0:
+    case FRONT:
 		drive_led_on();
 		motors_forward();
 		break;
     
-    case 1:
+    case FRONT_RIGHT:
 		drive_led_on();
 		motors_for_right();
 		break;
     
-    case 2:
+    case FRONT_LEFT:
 		drive_led_on();
 		motors_for_left();
 		break;
     
-    case 3:
+    case RIGHT:
 		drive_led_on();
 		motors_right();
 		break;
     
-    case 4:
+    case LEFT:
     	drive_led_on();
       	motors_left();
       	break;
