@@ -7,7 +7,8 @@ int main(void)
 {
 	motors_init();
 	adc_init();
-
+  key_init();
+  sei();
   while(1)
   {
     drive();

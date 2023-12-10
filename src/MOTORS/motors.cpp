@@ -21,7 +21,7 @@ void motors_init(void)
 	TCCR1B |= (1<<WGM12);
 
 
-	TCCR1B |= (1<<CS10); // preskaler = 1; czêstotliwoœæ PWM = F_CPU / preskaler / rozdzielczoœæ (w tym przypadku 8-bit) = 31250 Hz
+	TCCR1B |= (1<<CS12); // preskaler = 256; czêstotliwoœæ PWM = F_CPU / preskaler / rozdzielczoœæ (w tym przypadku 8-bit) = 122 Hz
 
 	motors_dir(1);
 }
@@ -48,14 +48,14 @@ void motors_forward(void)
 
 void motors_for_left(void)
 {
-	MOTOR_LEFT = 220;
+	MOTOR_LEFT = 150;
 	MOTOR_RIGHT = 255;
 }
 
 void motors_for_right(void)
 {
 	MOTOR_LEFT = 255;
-	MOTOR_RIGHT = 220;
+	MOTOR_RIGHT = 150;
 }
 
 void motors_left(void)
@@ -81,45 +81,27 @@ void drive(void)
     switch (dir_switch)
     {
     case FRONT:
-		drive_led_on();
 		motors_forward();
 		break;
     
     case FRONT_RIGHT:
-		drive_led_on();
 		motors_for_right();
 		break;
     
     case FRONT_LEFT:
-		drive_led_on();
 		motors_for_left();
 		break;
     
     case RIGHT:
-		drive_led_on();
 		motors_right();
 		break;
     
     case LEFT:
-    	drive_led_on();
       	motors_left();
       	break;
 
     default:
-		drive_led_off();
     	motors_stop();
       break;
     }
-}
-
-void drive_led_on(void)
-{
-	DDRD |= (1<<PD4);
-	PORTD &= ~(1<<PD4);
-}
-
-void drive_led_off(void)
-{
-	DDRD |= (1<<PD4);
-	PORTD |= (1<<PD4);
 }

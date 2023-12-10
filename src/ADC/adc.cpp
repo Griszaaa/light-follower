@@ -1,13 +1,26 @@
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 #include "adc.h"
 #include "../MOTORS/motors.h"
+
+volatile uint16_t treshold = 400;
 
 void adc_init(void)
 {
 	ADMUX |= (1<<REFS0) | (1<<REFS1); // wybór Ÿród³a odnieniesia - wewnêtrzne 2,56 V
 	ADCSRA |= (1<<ADEN) | (1<<	ADPS2) | (1<<ADPS1); // w³¹czenie przetwornika oraz preskaler - 64 (próbkowanie przy 10-bitach musi byæ od 50 - 200 kHz, w tym przypadku 125 kHz)
+}
+
+void key_init(void)
+{
+	//ustawienia INT0
+	DDRD = ~(KEY);
+	PORTD |= KEY;
+	MCUCR &= ~(1<<ISC00); // zbocze opadaj¹ce wyzwala przerwanie
+	MCUCR |= (1<<ISC01);
+	GICR |= (1<<INT0); // odblokowanie przerwania dla INT0
 }
 
 uint8_t adc_motors_read(void)
@@ -19,7 +32,7 @@ uint8_t adc_motors_read(void)
 	for(uint8_t i = 0; i < 5; i++)
 	{
 		uint16_t meas = measure(i);
-		if(meas < TRESHOLD)
+		if(meas < treshold)
 		{
 			sensors[i] = 0;
 			emptiness++;
@@ -55,4 +68,12 @@ uint16_t measure(uint16_t channel)
 	ADCSRA |= (1<<ADSC); // start konwersji
 	while(ADCSRA & (1<<ADSC)); // oczekiwanie na zakoñczenie pomiaru
 	return ADC; // zwrócenie wyniku
+}
+
+ISR(INT0_vect)
+{
+	static bool night = true;
+	if(night) treshold = 100;
+	else treshold = 400;
+	night = !night;
 }
