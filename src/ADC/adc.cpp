@@ -5,7 +5,7 @@
 #include "adc.h"
 #include "../MOTORS/motors.h"
 
-volatile uint16_t treshold = 400;
+volatile uint16_t treshold = 350;
 
 void adc_init(void)
 {
@@ -29,21 +29,18 @@ uint8_t adc_motors_read(void)
 	uint8_t dir_switch = 0;
 	uint8_t emptiness = 0;
 
-	for(uint8_t i = 0; i < 5; i++)
+	for(uint8_t i = 0; i < 5; i++) sensors[i] = measure(i); // akwizycja danych
+
+	for(uint8_t i = 0; i < 5; i++) 
 	{
-		uint16_t meas = measure(i);
-		if(meas < treshold)
+		if(sensors[i] < treshold)
 		{
 			sensors[i] = 0;
 			emptiness++;
 		}
-		else sensors[i] = meas;
 	}
 
-	if(emptiness == 5)
-	{
-		return 5;
-	}
+	if(emptiness == 5) return 5;
 	else
 	{
 		emptiness = 0;
@@ -62,7 +59,7 @@ uint8_t tab_max(uint16_t tab[], uint8_t size)
 	return index_max;
 }
 
-uint16_t measure(uint16_t channel)
+uint16_t measure(uint8_t channel)
 {
 	ADMUX = (ADMUX & 0xF8) | channel; // wybór kana³u
 	ADCSRA |= (1<<ADSC); // start konwersji
@@ -74,6 +71,6 @@ ISR(INT0_vect)
 {
 	static bool night = true;
 	if(night) treshold = 100;
-	else treshold = 400;
+	else treshold = 350;
 	night = !night;
 }

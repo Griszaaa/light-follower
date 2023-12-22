@@ -15,7 +15,7 @@ void adc_init(void);
 void key_init(void);
 uint8_t adc_motors_read(void);
 uint8_t tab_max(uint16_t tab[], uint8_t size);
-uint16_t measure(uint16_t channel);
+uint16_t measure(uint8_t channel);
 
 #endif /* ADC_ADC_H_ */
 

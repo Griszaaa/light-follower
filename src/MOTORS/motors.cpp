@@ -9,7 +9,7 @@ void motors_init(void)
 {
 	DDRD |= MOTOR_LEFT_1 | MOTOR_LEFT_2 | MOTOR_RIGHT_1; // wyjœciowy kierunek pinów steruj¹cych kierunkiem obrotów silników
 	DDRB |= MOTOR_RIGHT_2;
-
+	
 	// *** USTAWIENIA PWM ***
 	DDRB |= MOTOR_RIGHT_PWM | MOTOR_LEFT_PWM; // wyjœciowy kierunek pinów PWM
 
@@ -48,14 +48,14 @@ void motors_forward(void)
 
 void motors_for_left(void)
 {
-	MOTOR_LEFT = 150;
+	MOTOR_LEFT = 110;
 	MOTOR_RIGHT = 255;
 }
 
 void motors_for_right(void)
 {
 	MOTOR_LEFT = 255;
-	MOTOR_RIGHT = 150;
+	MOTOR_RIGHT = 110;
 }
 
 void motors_left(void)
